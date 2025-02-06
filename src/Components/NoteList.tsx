@@ -47,7 +47,7 @@ const NoteList = ({availableTags, notes, onDeleteTag, onUpdateTag}: NoteListProp
   return (
     <>
       <Row className='align-items-center mb-3'>
-        <Col><h1>Notes</h1></Col>
+        <Col><h4>Notes</h4></Col>
         <Col xs="auto">
           <Stack direction='horizontal' gap={2}>
             <Link to="new">
@@ -57,6 +57,7 @@ const NoteList = ({availableTags, notes, onDeleteTag, onUpdateTag}: NoteListProp
           </Stack>
         </Col>
       </Row>
+      <p className="text-[10px]">Search for note below</p>
       <Form className='mb-4'>
         <Row>
           <Col>
@@ -89,13 +90,17 @@ const NoteList = ({availableTags, notes, onDeleteTag, onUpdateTag}: NoteListProp
           </Col>
         </Row>
       </Form>
-      <Row xs={1} sm={2} lg={3} xl={4} className="g-3">
-        {filteredNotes.map(note => (
-          <Col key={note.id}>
-            <NoteCard id={note.id} title={note.title} tags={note.tags}/>
-          </Col>
-        ))}
-      </Row>
+      {filteredNotes.length > 0 ? (
+        <Row xs={1} sm={2} lg={3} xl={4} className="g-3">
+          {filteredNotes.map(note => (
+            <Col key={note.id}>
+              <NoteCard id={note.id} title={note.title} tags={note.tags}/>
+            </Col>
+          ))}
+        </Row>
+      ) : (
+        <Row xs={1} sm={2} lg={3} xl={4}><p>Click create to write your first note</p></Row>
+      )}
       <EditTagsModal availableTags={availableTags} show={tagsModalIsOpen } handleClose={() => setTagsModalIsOpen(false)}
       onUpdateTag={onUpdateTag} onDeleteTag={onDeleteTag}
       /> 

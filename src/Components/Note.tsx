@@ -35,7 +35,7 @@ const Note = ({onDeleteNote} : NoteProps) => {
             </Link>
             <Button onClick={() => {
               onDeleteNote(note.id)
-              navigate("/ ")
+              navigate("/")
             }} variant='outline-danger'>Delete</Button>
             <Link to="/">
               <Button variant='outline-secondary'>Back</Button>

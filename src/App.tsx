@@ -1,14 +1,19 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Container } from 'react-bootstrap'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import 'tailwindcss'
+import { Container, Navbar, Nav, Button } from 'react-bootstrap'
+import { Navigate, Route, Routes, useNavigate} from 'react-router-dom'
 import { NewNote } from './Components/NewNote'
 import { useLocalStorage } from './Components/useLocalStorage'
-import { useMemo } from 'react' 
+import { useEffect, useMemo, useState } from 'react' 
 import {v4 as uuidV4} from "uuid"
 import NoteList from './Components/NoteList'
 import NotesLayout from './Components/NotesLayout'
 import Note from './Components/Note'
 import { EditNote } from './Components/EditNote'
+import Login from './Components/auth/Login'
+import SignUp from './Components/auth/SignUp'
+import ForgotPassword from './Components/auth/ForgotPassword'
+import {Toaster} from 'react-hot-toast'
 
 export type Note = {
   id: string
@@ -38,6 +43,17 @@ export type RawNote = {
 function App() {
   const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", [])
   const [tags, setTags] = useLocalStorage<Tag[]>("TAGS", [])
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate()
+
+  const firstname = localStorage.getItem("firstname");
+  const lastname = localStorage.getItem("lastname");
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false);
+    navigate("/auth/login");
+  }
 
   const noteWithTags = useMemo(() => {
     return notes.map(note => {
@@ -95,6 +111,32 @@ function App() {
 
   return (
     <Container className='my-4'>
+      <Toaster/>
+      <Navbar bg="light" expand="lg" className="mb-4">
+        <Navbar.Brand href="/">GroupN-notes</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse className="justify-content-end">
+          {isLoggedIn ? (
+            <>
+              <Navbar.Text className="me-3">
+                Welcome, {firstname} {lastname}
+              </Navbar.Text>
+              <Button variant="outline-danger" onClick={handleLogout}>
+                Logout
+              </Button>
+            </>
+          ) : (
+            <Nav >
+              <Button variant="outline-primary" className="me-2" onClick={() => navigate("/auth/signup")}>
+                Sign Up
+              </Button>
+              <Button variant="primary" onClick={() => navigate("/auth/login")}>
+                Sign In
+              </Button>
+            </Nav>
+          )}
+        </Navbar.Collapse>
+      </Navbar>
       <Routes>
         <Route path='/' element={<NoteList notes={noteWithTags} availableTags={tags} onUpdateTag={updateTag}
         onDeleteTag={deleteTag}/>}/>
@@ -104,6 +146,9 @@ function App() {
           <Route path="edit" element={<EditNote onAddTag={addTag} availableTags={tags} onSubmit={onUpdateNote}/>} />
         </Route>
         <Route path='*' element={<Navigate to='/' />}/>
+        <Route path='/auth/login' element={<Login setIsLoggedIn={setIsLoggedIn}/>}/>
+        <Route path='/auth/signup' element={<SignUp/>}/>
+        <Route path='/forgot-password' element={<ForgotPassword/>}/>
       </Routes> 
     </Container>
   )
