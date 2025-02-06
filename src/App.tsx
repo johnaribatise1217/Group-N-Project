@@ -4,7 +4,7 @@ import { Container, Navbar, Nav, Button } from 'react-bootstrap'
 import { Navigate, Route, Routes, useNavigate} from 'react-router-dom'
 import { NewNote } from './Components/NewNote'
 import { useLocalStorage } from './Components/useLocalStorage'
-import { useEffect, useMemo, useState } from 'react' 
+import { useMemo, useState } from 'react' 
 import {v4 as uuidV4} from "uuid"
 import NoteList from './Components/NoteList'
 import NotesLayout from './Components/NotesLayout'
