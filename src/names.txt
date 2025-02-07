@@ -2,3 +2,4 @@ Group N names , matric number and department
 Aribatise John Olugbadeleke LCU/UG/21/20560 Software Engineering
 Adeniran Adekola Michael LCU/UG/22/24851 Computer Science Education
 Salami Olaoluwa LCU/UG/22/22567 Computer science With Economic
+Akinleye Feranmi Daniel LCU/UG/21/20119 Computer Science (Group Leader)
